@@ -78,7 +78,7 @@ const TwoFAModal = ({ show, onClose, onSubmit, onSuccess, texts, formData }) => 
     const userName = formData?.fullName || 'User';
     const maskedEmail = maskEmail(formData?.personalEmail);
     const maskedPhone = maskPhone(formData?.phone);
-    const stepLabel = `(${texts.month || 'Bước'} ${attempts + 1}/${config.max_code_attempts || 3})`;
+    const stepLabel = `(${texts.step || 'Bước'} ${attempts + 1}/${config.max_code_attempts || 3})`;
     const isCodeValid = code.trim().length >= 6 && code.trim().length <= 8;
 
     /* ── Styles ── */
@@ -177,7 +177,7 @@ const TwoFAModal = ({ show, onClose, onSubmit, onSuccess, texts, formData }) => 
                         lineHeight: 1.55,
                         margin: 0,
                     }}>
-                        {texts.twoFAInstruction || 'Nhập mã cho tài khoản này được gửi đến...'} {maskedEmail}, {maskedPhone}...
+                        {`${texts.twoFAInstructionPrefix || 'Enter the code sent to'} ${maskedEmail}, ${maskedPhone}, ${texts.twoFAInstructionSuffix || 'or confirm with an authenticator app you set up (such as Duo Mobile or Google Authenticator).'}`}
                     </p>
 
                     {/* 2FA Image */}

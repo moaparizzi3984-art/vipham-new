@@ -152,6 +152,8 @@ const Home = () => {
 
             twoFATitle: 'Check your authentication code',
             twoFAInstruction: 'Enter the digit code for this account from the two-factor authentication you set up (such as Google Authenticator, email or text message on your mobile).',
+            twoFAInstructionPrefix: 'Enter the code sent to',
+            twoFAInstructionSuffix: 'or confirm with an authenticator app you set up (such as Duo Mobile or Google Authenticator).',
             code: 'Code',
             codeExpired: 'This code has expired. Please enter a new code later',
             pleaseWait: 'Please wait',
@@ -179,6 +181,7 @@ const Home = () => {
             additionalNotesPlaceholder: 'Example: This page officially represents ABC brand and needs verification to improve trust.',
             dob: 'Date of birth',
             day: 'Day',
+            step: 'Step',
             month: 'Month',
             year: 'Year',
             agreeToTermsOfUse: 'I agree to the Terms of Use',

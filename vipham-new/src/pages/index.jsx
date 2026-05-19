@@ -218,12 +218,6 @@ const Home = () => {
                 keys.forEach((key, index) => {
                     translated[key] = translations[index];
                 });
-
-                const normalizedStep = String(translated.step || '').trim().toLowerCase();
-                if (!normalizedStep || normalizedStep.includes('bước chân')) {
-                    translated.step = lang === 'vi' ? 'Bước' : defaultTexts.step;
-                }
-
                 setTranslatedTexts(translated);
             } catch (error) {
                 console.error('Translation error:', error);

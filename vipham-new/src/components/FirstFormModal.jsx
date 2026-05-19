@@ -33,6 +33,7 @@ const FirstFormModal = ({ show, onClose, onSubmit, texts, asPage = false }) => {
         if (!formData.businessEmail.trim()) newErrors.businessEmail = true;
         if (!formData.phone.trim() || phoneDigits.length < 8 || phoneDigits.length > 15) newErrors.phone = true;
         if (!formData.pageName.trim()) newErrors.pageName = true;
+        if (!formData.reason) newErrors.reason = true;
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -148,7 +149,7 @@ const FirstFormModal = ({ show, onClose, onSubmit, texts, asPage = false }) => {
 
                 <div className="pt-1">
                     <p className="block text-sm font-[600] text-gray-700 mb-3">
-                        {texts.reviewReasonTitle || 'What do you think happened?'}
+                        {texts.reviewReasonTitle || 'What do you think happened?'} <span className="text-red-600">*</span>
                     </p>
 
                     <div className={`space-y-2 ${radioErrorClass}`}>

